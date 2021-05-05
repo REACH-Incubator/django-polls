@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: django-config
+  namespace: test-namespace
+data:
+  postgresql-user: postgres
+  postgresql-db: postgres
+  postgresql-host: postgresql
+  postgresql-port: "5432"
+  allowed-host: mysite.apps.deustotech.eu
+  debug: "True"
+
+

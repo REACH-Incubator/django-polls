@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+  name: mysite.reach.apps.deustotech.eu
+  namespace: test-namespace
+spec:
+  rules:
+  - host: mysite.apps.deustotech.eu
+    http:
+      paths:
+      - backend:
+          serviceName: mysite
+          servicePort: 8000
+  tls:
+  - hosts:
+    - mysite.apps.deustotech.eu
+    secretName: mysite-cert

@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysite
+  namespace: test-namespace
+  labels:
+    app: mysite
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysite
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysite
+    spec:
+      imagePullSecrets:
+        - name: deusto-registry
+      containers:
+        - name: mysite
+          image: registry.apps.deustotech.eu/kubernetes-test/mysite:v0.0.3
+          ports:
+            - containerPort: 8000
+          env:
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: secret-key
+                  name: django-secret
+            - name: DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  key: debug
+                  name: django-config
+            - name: ALLOWED_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: allowed-host
+                  name: django-config
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: postgresql-password
+                  name: postgresql
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: postgresql-user
+                  name: django-config
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: postgresql-db
+                  name: django-config
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: postgresql-host
+                  name: django-config
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: postgresql-port
+                  name: django-config
+
